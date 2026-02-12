@@ -9,7 +9,7 @@ namespace Basket.API.Basket.GetBasket
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/Basket/{userName}", async (string Username, ISender Sender) =>
+            app.MapGet("api/basket/{userName}", async (string Username, ISender Sender) =>
             {
                 var result = await Sender.Send(new GetBasketQuery(Username));
                 var response = result.Adapt<GetBasketResult>();

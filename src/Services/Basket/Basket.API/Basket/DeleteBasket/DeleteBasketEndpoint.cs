@@ -8,7 +8,7 @@ namespace Basket.API.Basket.DeleteBasket
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/Basket/{Username}", async (string Username, ISender Sender) =>
+            app.MapDelete("api/basket/{Username}", async (string Username, ISender Sender) =>
             {
                 var result = await Sender.Send(new DeleteBasketCommand(Username));
                 var response = result.Adapt<DeleteBasketResponse>();

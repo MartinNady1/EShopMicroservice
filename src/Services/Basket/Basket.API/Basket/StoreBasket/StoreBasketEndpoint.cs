@@ -3,7 +3,7 @@
 namespace Basket.API.Basket.StoreBasket
 {
     public record StoreBasketRequest(ShoppingCart Cart);
-    public record storeBasketResponse(string UserName);
+    public record StoreBasketResponse(string UserName);
     public class StoreBasketEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
@@ -12,7 +12,7 @@ namespace Basket.API.Basket.StoreBasket
             {
                 var command = request.Adapt<StoreBasketCommand>();
                 var result = await Sender.Send(command);
-                var response = result.Adapt<storeBasketResponse>();
+                var response = result.Adapt<StoreBasketResponse>();
                 return Results.Created($"/api/basket/{response.UserName}", response);
 
             });

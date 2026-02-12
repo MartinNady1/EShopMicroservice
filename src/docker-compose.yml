@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  catalog.api:
+    image: catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+    ports:
+      - "5050:8080"
+      - "5051:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;https://+:8081
+      - ConnectionStrings__CatalogDb=Host=ep-billowing-surf-agg5tr0z-pooler.c-2.eu-central-1.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_i17KksIdfXuL;SSL Mode=Require;Trust Server Certificate=true
+    networks:
+      - microservices-network
+
+  basket.api:
+    image: basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+    ports:
+      - "5001:8080"
+      - "5002:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;https://+:8081
+      - ConnectionStrings__BasketDb=Host=ep-weathered-tooth-agg01jx8-pooler.c-2.eu-central-1.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_eDvQIs1H2cpd;SSL Mode=Require;Trust Server Certificate=true
+      - ConnectionStrings__Redis=redis-16983.c250.eu-central-1-1.ec2.cloud.redislabs.com:16983,password=cYaNyRDUmZ62C3oxkB3unZkJH6hnsVkt,user=default,ssl=True,abortConnect=False
+      - CatalogApiUrl=http://catalog.api:8080
+    depends_on:
+      - catalog.api
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
