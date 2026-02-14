@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Ordering.Domain.Abstraction
+{
+    public abstract class Aggregate<TId> : Entity<TId>, IAggregate<TId>
+    {
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+
+        private readonly List<IDomainEvent> _domainEvents = new();
+
+        public void AddDomainEvent(IDomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+        public IDomainEvent[] ClearDomainEvents()
+        {
+            IDomainEvent[] dequeuedEvents = _domainEvents.ToArray();
+            _domainEvents.Clear();
+            return dequeuedEvents;
+        }
+
+    }
+}
