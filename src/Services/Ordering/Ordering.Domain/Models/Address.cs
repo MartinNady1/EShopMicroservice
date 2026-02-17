@@ -24,7 +24,7 @@
             ZipCode = zipCode;
 
         }
-        public static Address Of(string firstName, string lastName, string emailAddress, string addressLine, string country, string city, string state, string zipCode)
+        public static Address Of( string firstName, string lastName, string emailAddress, string addressLine, string country, string city, string state, string zipCode)
         {
             ArgumentNullException.ThrowIfNull(firstName);
             ArgumentNullException.ThrowIfNull(lastName);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ordering.Domain.Models
 {
-    public record CustomerId
+    public readonly record struct CustomerId
     {
         public Guid Value { get; }
         private CustomerId(Guid value) => Value = value;

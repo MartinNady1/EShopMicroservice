@@ -29,6 +29,10 @@ namespace Ordering.Domain.Models
             ArgumentOutOfRangeException.ThrowIfGreaterThan(cvv.Length, 3);
             return new Payment(cardNumber, cardHolderName, expirationDate, cvv, paymentMethod);
         }
+        public static Payment Of(string cardNumber, string cardHolderName, string expirationDate, string cvv, int paymentMethod)
+        {
+            return Create(cardNumber, cardHolderName, expirationDate, cvv, paymentMethod);
+        }
 
     }
 }

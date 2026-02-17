@@ -36,6 +36,15 @@ namespace Ordering.Domain.Models
             order.AddDomainEvent(new OrderCreatedEvent(order));
             return order;
         }
+        public void Update(OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment , OrderStatus orderStatus)
+        {
+            OrderName = orderName;
+            ShippingAddress = shippingAddress;
+            BillingAddress = billingAddress;
+            Payment = payment;
+            OrderStatus = orderStatus;
+            AddDomainEvent(new OrderUpdatedEvent(this));
+        }
         public void UpdateOrderStatus(CustomerId customerId, OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment)
         {
             CustomerId = customerId;

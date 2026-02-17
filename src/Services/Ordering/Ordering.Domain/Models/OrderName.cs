@@ -1,6 +1,6 @@
 ﻿namespace Ordering.Domain.Models
 {
-    public record OrderName
+    public readonly record  struct OrderName
     {
         private const int defaultLength = 50;
         public string Value { get; }

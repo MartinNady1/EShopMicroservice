@@ -1,6 +1,6 @@
 ﻿namespace Ordering.Domain.Models
 {
-    public record OrderId
+    public readonly record struct OrderId
     {
         public Guid Value { get; }
 

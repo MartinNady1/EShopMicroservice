@@ -18,5 +18,6 @@ namespace Ordering.Domain.Models
             Price = price;
             Quantity = quantity;
         }
+        protected OrderItem() { }
     }
 }
