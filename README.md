@@ -1,6 +1,6 @@
 # 🛒 EShopMicroservice
 
-A production-ready e-commerce application built with **.NET**, following **Microservices Architecture**, **Domain-Driven Design (DDD)**, **CQRS**, and **Event-Driven Communication** patterns. Each service is independently deployable, containerized with Docker, and communicates either via REST, gRPC, or RabbitMQ message broker.
+An e-commerce application built with **.NET**, following **Microservices Architecture**, **Domain-Driven Design (DDD)**, **CQRS**, and **Event-Driven Communication** patterns. Each service is independently deployable, containerized with Docker, and communicates either via REST, gRPC, or RabbitMQ message broker.
 
 ---
 
