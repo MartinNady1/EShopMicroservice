@@ -50,7 +50,7 @@ A production-ready e-commerce application built with **.NET**, following **Micro
 
 | Tool | Purpose |
 |------|---------|
-| ASP.NET Core (.NET 8) | Web API framework |
+| ASP.NET Core (.NET 10) | Web API framework |
 | Marten | Document database ORM on top of PostgreSQL |
 | PostgreSQL | Primary database for product storage |
 | MediatR | Mediator pattern — routes Commands/Queries to Handlers |
@@ -90,7 +90,7 @@ A production-ready e-commerce application built with **.NET**, following **Micro
 
 | Tool | Purpose |
 |------|---------|
-| ASP.NET Core (.NET 8) | Web API framework |
+| ASP.NET Core (.NET 10) | Web API framework |
 | Redis | In-memory cache for basket storage (fast reads/writes) |
 | MassTransit | Abstraction layer over RabbitMQ for event publishing |
 | RabbitMQ | Message broker for publishing `BasketCheckoutEvent` |
@@ -124,7 +124,7 @@ A production-ready e-commerce application built with **.NET**, following **Micro
 
 | Tool | Purpose |
 |------|---------|
-| ASP.NET Core (.NET 8) | gRPC server host |
+| ASP.NET Core (.NET 10) | gRPC server host |
 | gRPC / Protobuf | Contract-first, binary communication protocol |
 | Dapper | Lightweight micro-ORM for database queries (faster than EF Core for simple CRUD) |
 | SQLite | Lightweight database for discount/coupon data |
@@ -162,7 +162,7 @@ This is the most architecturally rich service in the project. It demonstrates:
 
 | Tool | Purpose |
 |------|---------|
-| ASP.NET Core (.NET 8) | Web API framework |
+| ASP.NET Core (.NET 10) | Web API framework |
 | Entity Framework Core | ORM for database access and migrations |
 | SQL Server | Relational database for persistent order storage |
 | MediatR | CQRS mediator + Domain Event dispatching |
@@ -215,7 +215,7 @@ Ordering.API          → Controllers/Endpoints, Dependency Injection setup
 | Tool | Purpose |
 |------|---------|
 | YARP (Yet Another Reverse Proxy) | Microsoft's high-performance reverse proxy library |
-| ASP.NET Core (.NET 8) | Hosting the gateway |
+| ASP.NET Core (.NET 10) | Hosting the gateway |
 | Docker | Containerization |
 
 **Why YARP over Ocelot?** YARP is Microsoft's official reverse proxy, deeply integrated with ASP.NET Core middleware pipeline, highly performant, and actively maintained.
@@ -334,7 +334,7 @@ docker-compose down
 ## 🚀 Getting Started
 
 ### Prerequisites
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ### Run the Application
