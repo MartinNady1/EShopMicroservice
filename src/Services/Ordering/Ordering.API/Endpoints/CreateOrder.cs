@@ -17,7 +17,7 @@ namespace Ordering.API.Endpoints
                 var command = Order.Adapt<CreateOrderCommand>();
                 var result = await sender.Send(command);
                 var response = result.Adapt<GetOrdersResponse>();
-                return Results.Created($"/api/orders/{response.Id}", response);
+                return Results.Created($"/api/orders/{response.Orders}", response);
             });
         }
     }

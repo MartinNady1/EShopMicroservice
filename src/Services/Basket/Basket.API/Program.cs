@@ -1,6 +1,7 @@
 
 
 
+using BuildingBlocks.Messaging.MassTransit;
 using Discount.Grpc.Protos;
 using HealthChecks.UI.Client;
 
@@ -33,6 +34,7 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("BasketDb")!)
     .AddRedis(builder.Configuration["Redis:ConnectionString"]!);
+builder.Services.AddMessageBroker(builder.Configuration);
 var app = builder.Build();
 
 app.MapCarter();
