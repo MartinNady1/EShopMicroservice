@@ -363,23 +363,221 @@ docker-compose up -d
 ## 📁 Project Structure
 
 ```
-src/
-├── Services/
-│   ├── Catalog/
-│   │   └── Catalog.API/
-│   ├── Basket/
-│   │   └── Basket.API/
-│   ├── Discount/
-│   │   └── Discount.Grpc/
-│   └── Ordering/
-│       ├── Ordering.Domain/
-│       ├── Ordering.Application/
-│       ├── Ordering.Infrastructure/
-│       └── Ordering.API/
-├── ApiGateways/
-│   └── YarpApiGateway/
-└── BuildingBlocks/
-    └── BuildingBlocks/          ← Shared kernel (exceptions, behaviors, etc.)
+📦 EShopMicroservice
+├── 📄 docker-compose.yml
+├── 📄 docker-compose.override.yml
+├── 📄 .dockerignore
+│
+├── 📂 ApiGateways
+│   └── 📂 YarpApiGateway
+│       ├── 📄 Program.cs
+│       ├── 📄 appsettings.json
+│       ├── 📄 appsettings.Development.json
+│       ├── 📄 Dockerfile
+│       └── 📄 YarpApiGateway.csproj
+│
+├── 📂 BuildingBlocks
+│   ├── 📂 BuildingBlocks                   ← Shared CQRS abstractions & behaviors
+│   │   ├── 📂 Behavoirs
+│   │   │   ├── 📄 LoggingBehavior.cs
+│   │   │   └── 📄 ValidateBehavior.cs
+│   │   ├── 📂 CQRS
+│   │   │   ├── 📄 ICommand.cs
+│   │   │   ├── 📄 ICommandHandler.cs
+│   │   │   ├── 📄 IQuery.cs
+│   │   │   └── 📄 IQueryHandler.cs
+│   │   └── 📂 Pagination
+│   │       ├── 📄 PaginatedResult.cs
+│   │       └── 📄 PaginationRequest.cs
+│   │
+│   ├── 📂 BuildingBlocks.Messaging          ← Shared messaging contracts & MassTransit setup
+│   │   ├── 📂 Events
+│   │   │   ├── 📄 IntegrationEvent.cs
+│   │   │   └── 📄 BasketCheckoutEvent.cs
+│   │   └── 📂 MassTransit
+│   │       └── 📄 Extensions.cs
+│   │
+│   └── 📂 ResultPattern                     ← Shared Result/Error pattern
+│       ├── 📄 Result.cs
+│       └── 📄 Error.cs
+│
+└── 📂 Services
+    ├── 📂 Catalog
+    │   └── 📂 Catalog.API
+    │       ├── 📄 Program.cs
+    │       ├── 📄 ResultToHttpMapper.cs
+    │       ├── 📄 Dockerfile
+    │       ├── 📄 appsettings.json
+    │       ├── 📂 Models
+    │       │   ├── 📄 Product.cs
+    │       │   └── 📄 ProductVariant.cs
+    │       └── 📂 Products                  ← Vertical Slice features
+    │           ├── 📂 CreateProduct
+    │           │   ├── 📄 CreateProductEndpoint.cs
+    │           │   └── 📄 CreateProductHandler.cs
+    │           ├── 📂 DeleteProduct
+    │           │   ├── 📄 DeleteProductEndpoint.cs
+    │           │   └── 📄 DeleteProductHandler.cs
+    │           ├── 📂 GetProducts
+    │           │   ├── 📄 GetProductsEndpoint.cs
+    │           │   └── 📄 GetProductsQueryHandler.cs
+    │           ├── 📂 GetProductById
+    │           │   ├── 📄 GetProductByIdEndpoint.cs
+    │           │   └── 📄 GetProductByIdQueryHandler.cs
+    │           ├── 📂 GetProductsByCategory
+    │           │   ├── 📄 GetProductsByCategoryEndpoint.cs
+    │           │   └── 📄 GetProductsByCategoryHandler.cs
+    │           ├── 📂 UpdateProduct
+    │           │   ├── 📄 UpdateProductEndpoint.cs
+    │           │   └── 📄 UpdateProductHandler.cs
+    │           └── 📂 Variants
+    │               ├── 📂 CreateVariant
+    │               │   ├── 📄 CreateVariantHandler.cs
+    │               │   └── 📄 CreateVariantsEndpoint.cs
+    │               └── 📂 GetVariant
+    │                   ├── 📄 GetVariantsEndpoint.cs
+    │                   └── 📄 GetVariantsQueryHandler.cs
+    │
+    ├── 📂 Basket
+    │   └── 📂 Basket.API
+    │       ├── 📄 Program.cs
+    │       ├── 📄 GlobalUsing.cs
+    │       ├── 📄 Dockerfile
+    │       ├── 📄 appsettings.json
+    │       ├── 📂 Models
+    │       │   ├── 📄 ShoppingCart.cs
+    │       │   └── 📄 ShoppingCartItem.cs
+    │       ├── 📂 Data
+    │       │   ├── 📄 IBasketRepository.cs
+    │       │   ├── 📄 BasketRepository.cs
+    │       │   └── 📄 CachedBasketRepository.cs
+    │       ├── 📂 Dtos
+    │       │   └── 📄 BasketCheckoutDto.cs
+    │       └── 📂 Basket                    ← Vertical Slice features
+    │           ├── 📂 GetBasket
+    │           │   ├── 📄 GetBasketEndpoint.cs
+    │           │   └── 📄 GetBasketHandler.cs
+    │           ├── 📂 StoreBasket
+    │           │   ├── 📄 StoreBasketEndpoint.cs
+    │           │   └── 📄 StoreBasketHandler.cs
+    │           ├── 📂 DeleteBasket
+    │           │   ├── 📄 DeleteBasketEndpoint.cs
+    │           │   └── 📄 DeleteBasketHandler.cs
+    │           └── 📂 CheckoutBasket
+    │               ├── 📄 CheckoutBasketEndpoint.cs
+    │               └── 📄 CheckoutBasketHandler.cs
+    │
+    ├── 📂 Discount
+    │   └── 📂 Discount.Grpc
+    │       ├── 📄 Program.cs
+    │       ├── 📄 Dockerfile
+    │       ├── 📄 appsettings.json
+    │       ├── 📂 Models
+    │       │   └── 📄 Coupon.cs
+    │       ├── 📂 Data
+    │       │   └── 📄 DiscountContext.cs
+    │       ├── 📂 Migrations
+    │       │   ├── 📄 20260211195530_IntialCreate.cs
+    │       │   ├── 📄 20260211202417_addValue.cs
+    │       │   └── 📄 20260211204629_changeingConnectionString.cs
+    │       ├── 📂 Protos
+    │       │   └── 📄 discount.proto
+    │       └── 📂 Services
+    │           └── 📄 DiscountService.cs
+    │
+    └── 📂 Ordering
+        ├── 📂 Ordering.Domain               ← DDD Domain layer
+        │   ├── 📂 Abstraction
+        │   │   ├── 📄 IEntity.cs
+        │   │   ├── 📄 Entity.cs
+        │   │   ├── 📄 IAggregate.cs
+        │   │   ├── 📄 Aggregate.cs
+        │   │   └── 📄 IDomainEvent.cs
+        │   ├── 📂 Models
+        │   │   ├── 📄 Order.cs
+        │   │   ├── 📄 OrderId.cs
+        │   │   ├── 📄 OrderItem.cs
+        │   │   ├── 📄 OrderItemId.cs
+        │   │   ├── 📄 OrderName.cs
+        │   │   ├── 📄 Customer.cs
+        │   │   ├── 📄 CustomerId.cs
+        │   │   ├── 📄 Product.cs
+        │   │   ├── 📄 ProductId.cs
+        │   │   ├── 📄 Address.cs
+        │   │   └── 📄 Payment.cs
+        │   ├── 📂 Events
+        │   │   ├── 📄 OrderCreatedEvent.cs
+        │   │   └── 📄 OrderUpdatedEvent.cs
+        │   └── 📂 Enums
+        │       └── 📄 OrderStatus.cs
+        │
+        ├── 📂 Ordering.Application          ← CQRS use cases & interfaces
+        │   ├── 📄 DependencyInjection.cs
+        │   ├── 📂 Data
+        │   │   └── 📄 IApplicationDbContext.cs
+        │   ├── 📂 Dtos
+        │   │   ├── 📄 OrderDto.cs
+        │   │   ├── 📄 OrderItemDto.cs
+        │   │   ├── 📄 AddressDto.cs
+        │   │   └── 📄 PaymentDto.cs
+        │   ├── 📂 Extensions
+        │   │   └── 📄 OrderExtensions.cs
+        │   └── 📂 Orders
+        │       ├── 📂 Commands
+        │       │   ├── 📂 CreateOrder
+        │       │   │   ├── 📄 CreateOrderCommands.cs
+        │       │   │   └── 📄 CreateOrderHandler.cs
+        │       │   ├── 📂 UpdateOrder
+        │       │   │   ├── 📄 UpdateOrderCommand.cs
+        │       │   │   └── 📄 UpdateOrderHandler.cs
+        │       │   └── 📂 DeleteOrder
+        │       │       ├── 📄 DeleteOrderCommand.cs
+        │       │       └── 📄 DeleteOrderHandler.cs
+        │       ├── 📂 Queries
+        │       │   ├── 📂 GetOrders
+        │       │   │   ├── 📄 GetOrdersQuery.cs
+        │       │   │   └── 📄 GetOrdersHandler.cs
+        │       │   ├── 📂 GetOrdersByCustomer
+        │       │   │   ├── 📄 GetOrderByCustomerQuery.cs
+        │       │   │   └── 📄 GetOrderByCustomerHandler.cs
+        │       │   └── 📂 GetOrdersByName
+        │       │       ├── 📄 GetOrdersByNameQuery.cs
+        │       │       └── 📄 GetOrdersByNameHandler.cs
+        │       └── 📂 EventHandlers
+        │           ├── 📂 Domain
+        │           │   ├── 📄 OrderCreatedEventHandler.cs
+        │           │   └── 📄 OrderUpdatedEventHandler.cs
+        │           └── 📂 Integration
+        │               └── 📄 BasketCheckoutEventHandler.cs
+        │
+        ├── 📂 Ordering.Infrastructure       ← EF Core, DB configs, interceptors
+        │   ├── 📄 DependencyInjection.cs
+        │   └── 📂 Data
+        │       ├── 📄 ApplicationDbContext.cs
+        │       ├── 📂 Configurations
+        │       │   ├── 📄 OrderConfiguration.cs
+        │       │   ├── 📄 OrderItemConfiguration.cs
+        │       │   ├── 📄 CustomerConfiguration.cs
+        │       │   └── 📄 ProductConfiguration.cs
+        │       ├── 📂 Interceptors
+        │       │   ├── 📄 AuditEntityInterceptor.cs
+        │       │   └── 📄 DispatchDomainEventInterceptor.cs
+        │       └── 📂 Migrations
+        │           ├── 📄 20260215221958_IntialCreate.cs
+        │           └── 📄 20260215222456_FixOrderItemRelationship.cs
+        │
+        └── 📂 Ordering.API                  ← Entry point & endpoint registration
+            ├── 📄 Program.cs
+            ├── 📄 DependencyInjection.cs
+            ├── 📄 Dockerfile
+            ├── 📄 appsettings.json
+            └── 📂 Endpoints
+                ├── 📄 CreateOrder.cs
+                ├── 📄 UpdateOrder.cs
+                ├── 📄 DeleteOrder.cs
+                ├── 📄 GetOrders.cs
+                ├── 📄 GetOrdersByCustomer.cs
+                └── 📄 GetOrdersByName.cs
 ```
 
 ---
